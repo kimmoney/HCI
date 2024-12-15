@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # def text_to_image_array(text, image_size=(60, 40), font_path="src/data/SC/NotoSerifSC-ExtraLight.otf"):
-def text_to_image_array(text, image_size=(60, 40), font_path="src/Pretendard-Thin.ttf"):
+def text_to_image_array(text, image_size=(60, 40), font_path="src/data/SC/Pretendard-Thin.ttf"):
     """
     주어진 텍스트를 이진화된 이미지의 numpy 배열로 변환합니다.
     """
@@ -50,18 +50,20 @@ def text_to_image_array(text, image_size=(60, 40), font_path="src/Pretendard-Thi
 if __name__ == "__main__":
     # 본고딕 폰트 경로 설정
     print("start")
-    font_path = r"src/NotoSansKR-VariableFont_wght.ttf"
+    # font_path = r"src/NotoSansKR-VariableFont_wght.ttf"
     
     # 처리할 텍스트 리스트
-    texts = ["개", "강", "곰"]
+    texts = ["ㄱ", "ㄴ", "ㅏ","ㅐ",'가','간','개']
     
     # 각 텍스트에 대해 처리
     for text in texts:
-        result_array = text_to_image_array(text, font_path=font_path)
-        print(len(result_array), len(result_array[0]))
-        print(result_array)
+        result_array ,adskf= text_to_image_array(text)
+        # print(len(result_array), len(result_array[0]))
+        # print(result_array)
         print(f"'{text}'에 대한 이진 배열:")
         for t in result_array:
             for l in t:
                 print(l, end=",")
-            print("'],\n[",end="")
+            print("\n",end="")
+
+        print("\n")

@@ -21,7 +21,7 @@ from qasync import QEventLoop
 from SDK import DotPadSDK
 import matplotlib.pyplot as plt
 
-from image_process import text_to_image_array
+from data.py.image_process import text_to_image_array
 from PIL import Image, ImageDraw, ImageFont
 import cv2
 
