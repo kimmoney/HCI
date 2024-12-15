@@ -23,22 +23,19 @@ class SoundThread(QThread):
                 print(f"Status: {status}")  # 상태 체크를 위해 오류 발생 시 출력
 
             if self.switch_on:
-                t = (np.arange(frames) + callback.time) / 44100* self.a /900 # 시간 벡터 계산
+                t = (np.arange(frames) + callback.time) / 44100 # 시간 벡터 계산
 
                 # print(44100* self.a /100,"-----")
                 callback.time += frames  # 시간 경과 업데이트
 
                 # 주파수 계산 (1440Hz + a 값으로 변경)
-                base_frequency = 240
-                frequency = base_frequency 
-                # print(frequency)
-
-                # 사인파 생성 (클리핑 방지)
+                base_frequency = 440
+                frequency = base_frequency + (self.a - 100)  # 주파수 계산
                 tone = 0.1 * np.sin(2 * np.pi * frequency * t)
 
                 # 좌우 볼륨 조절 (b 값에 따라 결정)
-                left_volume = max(0, min(1, 1 - self.b))
-                right_volume = max(0, min(1, self.b))
+                left_volume = max(0, min(1,  self.b))
+                right_volume = max(0, min(1,1 - self.b))
 
                 # 좌우 채널 볼륨 조정 후 스테레오 음으로 변환
                 # outdata[:, 0] = tone * left_volume  # 왼쪽 채널
@@ -52,7 +49,7 @@ class SoundThread(QThread):
         callback.time = 0
 
         # 오디오 스트리밍 시작
-        with sd.OutputStream(channels=2, callback=callback, samplerate=44100*4, blocksize=1024*4):
+        with sd.OutputStream(channels=2, callback=callback, samplerate=44100, blocksize=1024):
             while self.running:
                 self.msleep(400)  # 0.4초마다 대기
 
@@ -62,10 +59,10 @@ class SoundThread(QThread):
         if self.a != a or self.b != b or self.switch_on != switch_on:
             print(a, b, switch_on)
             # self.a = a
-            if 901-a < 0:
+            if a < 0:
                 self.a = 0
             else:
-                self.a = 901-a
+                self.a = a
             
             self.b = b
             self.switch_on = switch_on
