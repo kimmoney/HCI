@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.0
+## Created by: Qt User Interface Compiler version 6.8.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -330,20 +330,20 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(60, 80, 50, 80)
-        self.pushButton_2 = QPushButton(self.menu_section)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.btn_learning = QPushButton(self.menu_section)
+        self.btn_learning.setObjectName(u"btn_learning")
         sizePolicy7 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
         sizePolicy7.setHorizontalStretch(0)
         sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy7)
+        sizePolicy7.setHeightForWidth(self.btn_learning.sizePolicy().hasHeightForWidth())
+        self.btn_learning.setSizePolicy(sizePolicy7)
         font9 = QFont()
         font9.setFamilies([u"Pretendard"])
         font9.setPointSize(45)
         font9.setBold(True)
-        self.pushButton_2.setFont(font9)
+        self.btn_learning.setFont(font9)
 
-        self.verticalLayout_3.addWidget(self.pushButton_2)
+        self.verticalLayout_3.addWidget(self.btn_learning)
 
         self.line_3 = QFrame(self.menu_section)
         self.line_3.setObjectName(u"line_3")
@@ -420,6 +420,22 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setColumnStretch(2, 18)
         self.gridLayout_2.setColumnStretch(3, 1)
         self.stacked_main.addWidget(self.menu)
+        self.connecting = QWidget()
+        self.connecting.setObjectName(u"connecting")
+        self.verticalLayout_4 = QVBoxLayout(self.connecting)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.connecting_label = QLabel(self.connecting)
+        self.connecting_label.setObjectName(u"connecting_label")
+        self.connecting_label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_4.addWidget(self.connecting_label)
+
+        self.stacked_main.addWidget(self.connecting)
+        self.painting = QWidget()
+        self.painting.setObjectName(u"painting")
+        self.layout_painting = QHBoxLayout(self.painting)
+        self.layout_painting.setObjectName(u"layout_painting")
+        self.stacked_main.addWidget(self.painting)
 
         self.horizontalLayout.addWidget(self.stacked_main)
 
@@ -430,7 +446,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stacked_main.setCurrentIndex(1)
+        self.stacked_main.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -453,9 +469,10 @@ class Ui_MainWindow(object):
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"id_name", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"\ub85c\uadf8\uc544\uc6c3", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Learning Courses", None))
+        self.btn_learning.setText(QCoreApplication.translate("MainWindow", u"Learning Courses", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Create Canvas", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"My Drawing", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Dot Drive", None))
+        self.connecting_label.setText(QCoreApplication.translate("MainWindow", u"DotPad\uc640 \uc5f0\uacb0\uc911\uc785\ub2c8\ub2e4.", None))
     # retranslateUi
 
