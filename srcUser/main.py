@@ -7,6 +7,7 @@ class MainWindow(QMainWindow,Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        self.stacked_main.setCurrentWidget(self.login)
         self.btn_login_geust.clicked.connect(lambda: self.stacked_main.setCurrentWidget(self.menu))
 
 
@@ -28,7 +29,7 @@ if __name__ == "__main__" :
     app = QApplication(sys.argv) 
     # screen = Main_simulatorClass()
     #WindowClass의 인스턴스 생성
-    window = PaintWidget()
+    # window = PaintWidget()
     main = MainWindow()
     # main = Main_simulatorClass() 
     
@@ -37,7 +38,8 @@ if __name__ == "__main__" :
 
 
     #프로그램 화면을 보여주는 코드
-    window.show()
+    # window.show()
+    main.show()
 
     #프로그램을 이벤트루프로 진입시키는(프로그램을 작동시키는) 코드
     app.exec_()
