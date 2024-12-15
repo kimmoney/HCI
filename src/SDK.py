@@ -61,7 +61,9 @@ class DotPadSDK:
         await self.display_graphic_data(device_name, reset_data)
 
 
-    async def display_pixel_data(self, device_name, data, row, index):
+    async def display_pixel_data(self, device_name, data, row, index, graphic_mode = False):
+        if graphic_mode:
+            row+=1
         if device_name not in self.device_map:
             raise Exception("Device is not connected.")
         
