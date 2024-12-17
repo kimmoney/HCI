@@ -16,12 +16,15 @@ from gtts import gTTS
 import sounddevice as sd
 import soundfile as sf
 import data.py.sound_live as sound_live
+from data.ui.main import Ui_MainWindow
+from data.py.image_process import text_to_image_array
+from data.ui.main import Ui_MainWindow
+from data.ui.course_unit import Ui_Form as UI_CourseUnit
 import numpy as np
 from scipy.ndimage import binary_dilation
 from os import path
 import images_rc
 import sys,tempfile
-import asyncio
 from qasync import QEventLoop
 from SDK import DotPadSDK
 import matplotlib.pyplot as plt

@@ -1,11 +1,6 @@
 
 from SDK import DotPadSDK
 from data.py.libs import *
-from data.ui.main import Ui_MainWindow
-from data.py.image_process import text_to_image_array
-from data.py.libs import *
-from data.ui.main import Ui_MainWindow
-from data.ui.course_unit import Ui_Form as UI_CourseUnit
 window_map = np.array([[0]*60]*40)
 # result_map = np.array([[0]*60]*40)
 result_map ,result_img = text_to_image_array("개")
@@ -43,18 +38,19 @@ class DotPadApp(QMainWindow,Ui_MainWindow):
         # 버튼 클릭 이벤트 연결 - 학습단계 -> 메인
         self.btn_curse2home.clicked.connect(lambda: self.stacked_main.setCurrentWidget(self.menu))
 
-        # 닷패드 sdk 추가
-
         # 캔버스 생성
         self.canvas = PaintWidget(self)
+        # 레이아웃 캔버스 추가
         self.layout_painting.addWidget(self.canvas)
+        # 레벨단위 코스 정의
         course_data = {"level1": ['ㄱ','ㄴ','ㄱ','ㅏ','ㅐ','가','간','개'],"level2": ['ㄱ','ㄴ','ㄱ','ㅏ','ㅐ','가','간','개'],"level3": ['ㄱ','ㄴ','ㄱ','ㅏ','ㅐ','가','간','개'],}
+        # 코스 슬롯 배당
         for course in course_data:
             index = 0
             for i in course_data[course]:
                 getattr(self,course).layout().addWidget(courseUnitClass(self,i),index%2,index//2)
                 index += 1
-        
+        # 음성 피드백 설정
         self.audio_output = QAudioOutput()
         self.media_player = QMediaPlayer()
         self.media_player.setAudioOutput(self.audio_output)
@@ -64,22 +60,29 @@ class DotPadApp(QMainWindow,Ui_MainWindow):
     async def async_connect_device(self):
         print("Searching for DotPad devices...")
         try:
+            # 주변 기기 검색
             self.devices = await self.sdk.request()
+            # 주변 기기 없음
             if not self.devices:
                 raise Exception("No DotPad devices found.")
+            # 첫 번째 기기 선택
             self.device = self.devices[0]
             print(f"Try connecting device: {self.device.name}")
+            # 연결 시도
             connected = await self.sdk.connect(self.device)
+            # 연결 된 경우
             if connected:
                 print(f"Connected to {self.device.name}")
+                # 연결 완료 페이지로 전환
                 self.stacked_main.setCurrentWidget(self.course)
-
                 # 키 이벤트 리스너 시작
                 await self.add_key_event_listener()
+            # 연결 안된 경우
             else:
                 print("Failed to connect.")
+                # 메인 페이지로 전환
                 self.stacked_main.setCurrentWidget(self.menu)
-
+        # 예외처리
         except Exception as e:
             print(f"Error during connection: {e}")
     # 닷패드 디스플레이 연결 
@@ -149,15 +152,14 @@ class DotPadApp(QMainWindow,Ui_MainWindow):
                     else:
                         self.play_tts(f"유사도가 {int(score)}점으로 기준을 통과했습니다. 코스 선택으로 이동합니다.")
                     # self.play_tts("검증모드로 전환합니다.")
-                        
-                
         try:
+            # 비동기 키 이벤트 리스너 추가
             await self.sdk.add_listener_key_event(self.device.name, key_event_callback)
             print("Key event listener added. Waiting for events...")
         except Exception as e:
             print(f"Error during adding key event listener: {e}")
 
-
+    # 이미지 유사도 계산
     def calculate_similarity_with_tolerance(self,image1, image2, tolerance=1):
         """
         한 픽셀 이동을 허용하면서 두 이미지의 유사도를 계산.
@@ -263,27 +265,35 @@ class PaintWidget(QWidget):
     def mouseMoveEvent(self, event):
         # 마우스를 움직일 때
         if event.buttons() & Qt.LeftButton and self.drawing:
+            # QPainter 정의
             painter = QPainter(self.pixmap)  # QPixmap에서 QPainter 사용
             pen = QPen(Qt.black, 25, Qt.SolidLine)  # 펜 설정 (색상, 두께)
             pen.setCapStyle(Qt.RoundCap)
             painter.setPen(pen)
-            
+            # 현재 위치 계산
             x = max(0,min(59, event.pos().x()/self.size().width()*60))
             y = max(0,min(39, event.pos().y()/self.size().height()*40))
             dot_x = int(x/2)
             dot_y = int(y/4)
+            # 현재 화면 모드에 따른 동작
             match state:
+                # 사용자 화면 모드
                 case "window":
+                    # 선을 그림, DotPad에 픽셀 데이터 전송
                     painter.drawLine(self.last_point, event.pos())  # 선을 그림
                     self.last_point = event.pos()   
                     self.update()  # 화면 갱신
                     if window_map[int(y)][int(x)] != 1:
                         window_map[int(y)][int(x)] = 1
                         asyncio.create_task(mainWindow.sdk.display_pixel_data(mainWindow.device.name,binary_to_braille_unicode(window_map,(dot_y,dot_x)),dot_y+1,dot_x))
+                # 모범 답안 모드
                 case "result":
                     pass
+                # 펜 위치 찾기 모드
                 case "activity":
+                    # 펜이 닷 유닛의 이동이 있을 경우만 동작
                     if int(x)!= int(self.before_points[0]) or int(y) != int(self.before_points[1]):
+                        # 이전 좌표 복구 및 현재 좌표 DotPad에 픽셀 데이터 전송
                         activity_map = before_map.copy()
                         print(dot_x,dot_y,self.before_points[2],self.before_points[3])
                         if not (dot_x == self.before_points[2] and dot_y == self.before_points[3]):
@@ -293,6 +303,7 @@ class PaintWidget(QWidget):
                         
                         asyncio.create_task(mainWindow.sdk.display_pixel_data(mainWindow.device.name,binary_to_braille_unicode(activity_map,(dot_y,dot_x)),dot_y+1,dot_x))
                         self.before_points = (x,y,dot_x,dot_y,before_pixel)
+            # 현재 위치에 따른 사운드 높낮이, 스테레오설정 및 시작
             self.sound_feedback.update_values(self.size().height() - event.pos().y(), event.pos().x() / self.size().width(), True)
 
 
@@ -302,8 +313,11 @@ class PaintWidget(QWidget):
         # 마우스를 놓으면 그림을 종료
         if event.button() == Qt.LeftButton:
             self.drawing = False
+            # 실시간 사운드 스트리밍 종료
             self.sound_feedback.update_values(400 - self.last_point.y(), self.last_point.x() / 600, False)
+            # 이전 좌표 복구 DotPad에 픽셀 데이터 전송
             asyncio.create_task(mainWindow.sdk.display_pixel_data(mainWindow.device.name,self.before_points[-1],self.before_points[3]+1,self.before_points[2]))
+    
     def paintEvent(self, event):
         # QPixmap을 화면에 그림
         canvas_painter = QPainter(self)
@@ -316,56 +330,6 @@ class PaintWidget(QWidget):
         painter = QPainter(new_pixmap)
         painter.drawPixmap(QPoint(0, 0), self.pixmap)  # 기존 pixmap을 그려줌
         self.pixmap = new_pixmap
-
-    
-
-
-    # def analyze_image(self):
-    #     global result_map, result_img
-
-    #     # QPixmap -> OpenCV 이미지 변환
-    #     img1 = qpixmap_to_cv_image(self.pixmap)
-    #     img2 = cv2.cvtColor(np.array(result_img), cv2.COLOR_RGB2BGR)
-    def analyze_image(self):
-        global result_map, result_img
-        # 일단 이미지 저장
-        self.pixmap.save("test.png")
-        ImageOps.invert(result_img).save("result.png")
-        image1_path = "test.png"
-        image2_path = "result.png"
-        # Step 1: Resize both images to 60x40
-        target_size = (60, 40)
-
-        image1 = Image.open(image1_path).resize(target_size)
-        image2 = Image.open(image2_path).resize(target_size)
-
-        # Step 2: Convert the first image (result.png) to inverted grayscale
-        # image1 = ImageOps.invert(ImageOps.grayscale(image1))
-
-        # Step 3: Convert both images to numpy arrays for comparison
-        array1 = np.array(image1, dtype=np.float32) / 255.0  # Normalize to [0, 1]
-        array2 = np.array(image2.convert("L"), dtype=np.float32) / 255.0  # Convert second image to grayscale and normalize
-
-        # Step 4: Compute similarity using minimal modification error
-        error = np.mean((array1 - array2) ** 2)  # Mean Squared Error (MSE)
-        similarity = 1 - error  # Convert error to similarity (1 means identical)
-        plt.subplot(1, 2, 1)
-        plt.imshow(array1, cmap="gray")
-        plt.title("Result")
-        plt.axis("off")
-        plt.subplot(1, 2, 2)
-        plt.imshow(array2, cmap="gray")
-        plt.title("Test")
-        plt.axis("off")
-        plt.show()
-        
-        
-        return similarity
-
-
-
-
-
 
 
 
@@ -389,22 +353,11 @@ def binary_to_braille_unicode(binary_data,pos=(0,0)):
         for bit_index, bit in enumerate(block):
             if bit == 1:
                 braille_value += 1 << braille_map[bit_index]
-        # print(block, chr(braille_value))
         result_array.append(f"{braille_value - 0x2800:02x}")
 
     return "".join(result_array)
 
                 
-def qpixmap_to_cv_image(qpixmap):
-    """QPixmap을 OpenCV의 NumPy 배열로 변환"""
-    qimage = qpixmap.toImage()
-    qimage = qimage.convertToFormat(QImage.Format.Format_RGB888)
-    width = qimage.width()
-    height = qimage.height()
-    ptr = qimage.bits()
-    arr = np.array(ptr).reshape((height, width, 3))  # NumPy 배열로 변환
-    return cv2.cvtColor(arr, cv2.COLOR_RGB2BGR)
-
 
 
 class courseUnitClass(QWidget,UI_CourseUnit):
@@ -416,21 +369,16 @@ class courseUnitClass(QWidget,UI_CourseUnit):
         self.result_map, self.result_img = text_to_image_array(keyword)
         # pillow image -> qpixmap
         scaled_result_map = 255-(self.result_map * 255).astype(np.uint8)
-
         # NumPy 배열에서 QImage로 변환
         height, width = scaled_result_map.shape
         qimage = QImage(scaled_result_map.data, width, height, width, QImage.Format_Grayscale8)
-
         # QPixmap 생성
         self.image_keword = QPixmap.fromImage(qimage)
-
         # 이미지를 지정된 크기에 맞게 비율 유지하며 조정
         target_size = QSize(234, 118)
         self.image_keword = self.image_keword.scaled(target_size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-
         # QLabel에 이미지 설정
         self.image.setPixmap(self.image_keword)
-
         # 텍스트 설정
         self.name.setText(keyword)
 
@@ -446,12 +394,7 @@ class courseUnitClass(QWidget,UI_CourseUnit):
         # 모드 전환
         state = "result"
         before_map = result_map.copy()
-        # sound play path
-
-        # .wav 파일 경로 설정
-        # wav_file = 'example.wav'
-
-        # asyncio.create_task(self.play_sound())
+        
     def play_sound(self):
         # .wav 파일 경로 설정
         wav_file = f"src/data/py/sound/output({self.keyword}).wav"
@@ -462,7 +405,6 @@ class courseUnitClass(QWidget,UI_CourseUnit):
         # 오디오 재생
         sd.play(data, samplerate)
         # 재생이 끝날 때까지 대기
-        # sd.wait()
 
 
 

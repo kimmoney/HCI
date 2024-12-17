@@ -42,26 +42,3 @@ def text_to_image_array(text, image_size=(60, 40), font_path="src/data/SC/Preten
     binary_array = (grayscale_img > 128).astype(int)  # 0과 1로 변환
 
     return binary_array, cropped_img
-
-
-# 실행 예제
-if __name__ == "__main__":
-    # 본고딕 폰트 경로 설정
-    print("start")
-    # font_path = r"src/NotoSansKR-VariableFont_wght.ttf"
-    
-    # 처리할 텍스트 리스트
-    texts = ["ㄱ", "ㄴ", "ㅏ","ㅐ",'가','간','개']
-    
-    # 각 텍스트에 대해 처리
-    for text in texts:
-        result_array ,adskf= text_to_image_array(text)
-        # print(len(result_array), len(result_array[0]))
-        # print(result_array)
-        print(f"'{text}'에 대한 이진 배열:")
-        for t in result_array:
-            for l in t:
-                print(l, end=",")
-            print("\n",end="")
-
-        print("\n")
