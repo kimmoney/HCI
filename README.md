@@ -45,9 +45,9 @@
     │   ├── images                # 이미지 리소스
     │   ├── py                    # 이미지 및 사운드 처리 코드
     │   │   └── sound             # 사전 사운드 관련 리소스 폴더
-    │   │   └── image_process.py  # UI 인터페이스
-    │   │   └── libs.py           # UI 인터페이스
-    │   │   └── sound_live.py     # UI 인터페이스
+    │   │   └── image_process.py  # 이미지 프로세싱 코드
+    │   │   └── libs.py           # 라이브러리 및 통합 함수 관리 코드
+    │   │   └── sound_live.py     # 실시간 사운드 피드백 코드
     │   └── ui                    # UI 인터페이스
     └── main.py                   # 메인 실행 파일
 ```
