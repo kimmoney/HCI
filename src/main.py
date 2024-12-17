@@ -23,7 +23,7 @@ class DotPadApp(QMainWindow,Ui_MainWindow):
         # Load ui
         self.setupUi(self)
         # 초기 페이지 설정
-        self.sdk = DotPadSDK()  # DotPad SDK 초기화
+        self.sdk = DotPadSDK("iPad")  # DotPad SDK 초기화
         self.device = None
 
         self.stacked_main.setCurrentWidget(self.login)

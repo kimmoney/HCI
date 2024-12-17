@@ -1,28 +1,28 @@
-import re
 from bleak import BleakClient, BleakScanner
 
 class DotPadSDK:
     device_map = {}
-
-    def __init__(self):
-        self.DOTPAD_PREFIX = "iPad"
-        # self.DOTPAD_PREFIX = "DotPad320"
+    # 디바이스 이름을 인자로 받도록 수정 - 2024.12.17 @김도훈
+    def __init__(self, device_name="DotPad"):
+        self.DOTPAD_PREFIX = device_name
         self.DOTPAD_SERVICE = "49535343-fe7d-4ae5-8fa9-9fafd205e455"
         self.DOTPAD_CHARACTERISTIC = "49535343-1e4d-4bd9-ba61-23c647249616"
-
+    # 여러 디바이스 리스틑를 return하도록 수정 - 2024.12.16 @김도훈
     async def request(self):
         print("Scanning for devices...")
         devices = await BleakScanner.discover()
         for device in devices:
             if device.name and self.DOTPAD_PREFIX in device.name:
                 print(f"Found device: {device.name}")
-                return device
+            else:
+                devices.remove(device)
+        if devices:
+            return devices
         raise Exception("No matching Bluetooth devices found.")
 
     async def connect(self, device):
         if not device:
             raise ValueError("No Bluetooth device selected")
-
         client = BleakClient(device)
         try:
             await client.connect()
