@@ -12,10 +12,10 @@ from PySide6.QtCore import QTimer,QSize, QUrl, QPoint
 from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtWidgets import QApplication, QMainWindow,QLineEdit, QPushButton, QVBoxLayout, QWidget
-import data.py.sound_live as sound_live
 from gtts import gTTS
 import sounddevice as sd
 import soundfile as sf
+import data.py.sound_live as sound_live
 import numpy as np
 from scipy.ndimage import binary_dilation
 from os import path
