@@ -1,9 +1,0 @@
-<RCC>
-  <qresource prefix="login">
-    <file>images/login/check_circle.png</file>
-  </qresource>
-  <qresource prefix="menu">
-    <file>images/menu/Keyboard arrow right.png</file>
-    <file>images/menu/profile_img.png</file>
-  </qresource>
-</RCC>
