@@ -35,17 +35,21 @@
 ## 프로젝트 구조  
 ```
 .
-├── README.md                 # 프로젝트 설명 문서
+├── README.md                     # 프로젝트 설명 문서
 ├── build
-│   └── build_qrc.py          # 이미지 리소스 빌드 스크립트
-├── requirements.txt          # 필요한 Python 패키지 목록
+│   └── build_qrc.py              # 이미지 리소스 빌드 스크립트
+├── requirements.txt              # 필요한 Python 패키지 목록
 └── src
-    ├── SDK.py                # 닷패드 SDK 연동 코드
-    ├── data                  # 데이터 및 리소스 폴더
-    │   ├── images            # 이미지 리소스
-    │   ├── py                # 이미지 및 사운드 처리 코드
-    │   └── ui                # UI 인터페이스
-    └── main.py               # 메인 실행 파일
+    ├── SDK.py                    # 닷패드 SDK 연동 코드
+    ├── data                      # 데이터 및 리소스 폴더
+    │   ├── images                # 이미지 리소스
+    │   ├── py                    # 이미지 및 사운드 처리 코드
+    │   │   └── sound             # 사전 사운드 관련 리소스 폴더
+    │   │   └── image_process.py  # UI 인터페이스
+    │   │   └── libs.py           # UI 인터페이스
+    │   │   └── sound_live.py     # UI 인터페이스
+    │   └── ui                    # UI 인터페이스
+    └── main.py                   # 메인 실행 파일
 ```
 
 ---
