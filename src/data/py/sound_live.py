@@ -1,9 +1,4 @@
-import sys
-import numpy as np
-import sounddevice as sd
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QSlider, QLabel, QVBoxLayout, QWidget
-from PySide6.QtCore import Qt, QThread, Signal
-
+from data.py.libs import *
 
 class SoundThread(QThread):
     """ 사운드 재생을 위한 QThread """

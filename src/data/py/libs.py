@@ -1,20 +1,35 @@
-import sys
 from PySide6.QtWidgets import *
-# from PySide6 import uic
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
 from PySide6.QtCore import Qt
-# import test_sound
-# main_simulator = uic.loadUiType("src/main_simulator.ui")[0]
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-import sys
-from os import path
-import images_rc
-# import Qimage
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QSlider, QLabel, QVBoxLayout, QWidget
+from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtGui import QPainter, QPen, QColor, QBrush, QPolygon
-from PySide6.QtCore import QPoint
+from PySide6.QtCore import QTimer,QSize, QUrl, QPoint
+from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtWidgets import QApplication, QMainWindow,QLineEdit, QPushButton, QVBoxLayout, QWidget
+import data.py.sound_live as sound_live
+from gtts import gTTS
+import sounddevice as sd
+import soundfile as sf
+import numpy as np
+from scipy.ndimage import binary_dilation
+from os import path
+import images_rc
+import sys,tempfile
+import asyncio
+from qasync import QEventLoop
+from SDK import DotPadSDK
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import cv2
+from qasync import QEventLoop
+import asyncio
+
 # UI 파일이 위치한 디렉토리 설정
 ui_path = path.join(sys.path[0], "data/ui")
 print(f"UI Path: {ui_path}")  # 경로를 확인하는 디버깅 출력

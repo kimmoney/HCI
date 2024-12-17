@@ -1,6 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont
-import cv2
-import numpy as np
+from data.py.libs import *
 
 # def text_to_image_array(text, image_size=(60, 40), font_path="src/data/SC/NotoSerifSC-ExtraLight.otf"):
 def text_to_image_array(text, image_size=(60, 40), font_path="src/data/SC/Pretendard-Thin.ttf"):

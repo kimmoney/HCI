@@ -1,37 +1,11 @@
-import sys
-import tempfile
-from PySide6.QtCore import QUrl
-from PySide6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
-from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
-from gtts import gTTS
-from PySide6.QtCore import QTimer
-import sounddevice as sd
-import soundfile as sf
-from scipy.ndimage import binary_dilation
-from PIL import Image, ImageOps
+
+from SDK import DotPadSDK
 from data.py.libs import *
 from data.ui.main import Ui_MainWindow
-import numpy as np
-from PySide6.QtCore import QSize
-import data.py.sound_live as sound_live
-import sys
-import asyncio
-from PySide6.QtWidgets import QApplication, QMainWindow,QLineEdit, QPushButton, QVBoxLayout, QWidget
-from qasync import QEventLoop
-from SDK import DotPadSDK
-import matplotlib.pyplot as plt
-
 from data.py.image_process import text_to_image_array
-from PIL import Image, ImageDraw, ImageFont
-import cv2
-
-import sys
-import asyncio
-from qasync import QEventLoop
-from SDK import DotPadSDK
 from data.py.libs import *
 from data.ui.main import Ui_MainWindow
-from data.ui.course_unit_ui import Ui_Form as UI_CourseUnit
+from data.ui.course_unit import Ui_Form as UI_CourseUnit
 window_map = np.array([[0]*60]*40)
 # result_map = np.array([[0]*60]*40)
 result_map ,result_img = text_to_image_array("개")
@@ -90,8 +64,11 @@ class DotPadApp(QMainWindow,Ui_MainWindow):
     async def async_connect_device(self):
         print("Searching for DotPad devices...")
         try:
-            self.device = await self.sdk.request()
-            print(f"Device found: {self.device.name}")
+            self.devices = await self.sdk.request()
+            if not self.devices:
+                raise Exception("No DotPad devices found.")
+            self.device = self.devices[0]
+            print(f"Try connecting device: {self.device.name}")
             connected = await self.sdk.connect(self.device)
             if connected:
                 print(f"Connected to {self.device.name}")
