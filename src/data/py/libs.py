@@ -15,11 +15,6 @@ from PySide6.QtWidgets import QApplication, QMainWindow,QLineEdit, QPushButton, 
 from gtts import gTTS
 import sounddevice as sd
 import soundfile as sf
-import data.py.sound_live as sound_live
-from data.ui.main import Ui_MainWindow
-from data.py.image_process import text_to_image_array
-from data.ui.main import Ui_MainWindow
-from data.ui.course_unit import Ui_Form as UI_CourseUnit
 import numpy as np
 from scipy.ndimage import binary_dilation
 from os import path
@@ -32,6 +27,11 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 import cv2
 from qasync import QEventLoop
 import asyncio
+import data.py.sound_live as sound_live
+from data.ui.main import Ui_MainWindow
+from data.py.image_process import text_to_image_array
+from data.ui.main import Ui_MainWindow
+from data.ui.course_unit import Ui_Form as UI_CourseUnit
 
 # UI 파일이 위치한 디렉토리 설정
 ui_path = path.join(sys.path[0], "data/ui")
